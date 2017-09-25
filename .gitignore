@@ -1,0 +1,6 @@
+.gradle
+.idea
+build
+out
+application-actual.yml
+names-actual.txt

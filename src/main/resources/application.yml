@@ -1,0 +1,8 @@
+slack:
+    url: ${SLACK_URL}
+    name: ${SLACK_NAME}
+    token: ${SLACK_TOKEN}
+    emoji: ${SLACK_EMOJI}
+    channel: ${SLACK_CHANNEL}
+    iconUrl: ${SLACK_ICON_URL}
+    fileName: ${SLACK_FILENAME}
