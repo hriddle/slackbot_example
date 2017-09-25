@@ -39,13 +39,17 @@ public class XpBotServiceTest {
 
     @Test
     public void sendAllNames_makesAPostRequest() throws IOException {
-        xpBotService.sendAllNamesFrom("listOfNamesTest.txt");
+        when(slackConfigurationService.getFileName()).thenReturn("names-test.txt");
+
+        xpBotService.sendAllNames();
         verify(restTemplate).postForLocation(anyString(), anyString());
     }
 
     @Test
     public void sendAllNames_returnsListOfNamesWhenFileExists() throws IOException {
-        XpBotResponse actualResponse = xpBotService.sendAllNamesFrom("listOfNamesTest.txt");
+        when(slackConfigurationService.getFileName()).thenReturn("names-test.txt");
+
+        XpBotResponse actualResponse = xpBotService.sendAllNames();
 
         XpBotResponse expectedResponse = XpBotResponse.newXpBotResponse()
                 .message(asList("Anna", "Bob", "Chris", "Danny", "Elliot"))
@@ -58,7 +62,9 @@ public class XpBotServiceTest {
 
     @Test
     public void sendAllNames_returnsEmptyListWhenFileDoesNotExist() throws IOException {
-        XpBotResponse actualResponse = xpBotService.sendAllNamesFrom("fileDoesNotExist.txt");
+        when(slackConfigurationService.getFileName()).thenReturn("fileDoesNotExist.txt");
+
+        XpBotResponse actualResponse = xpBotService.sendAllNames();
 
         XpBotResponse expectedResponse = XpBotResponse.newXpBotResponse()
                 .message(Collections.emptyList())

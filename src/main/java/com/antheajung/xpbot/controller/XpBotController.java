@@ -1,6 +1,5 @@
 package com.antheajung.xpbot.controller;
 
-import com.antheajung.xpbot.configuration.SlackConfigurationService;
 import com.antheajung.xpbot.domain.XpBotResponse;
 import com.antheajung.xpbot.service.XpBotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class XpBotController {
     @RequestMapping(value = "/listAllNames", method = RequestMethod.GET)
     public XpBotResponse listNames() {
         logger.log(Level.INFO, "** Getting list of Names **");
-        return xpBotService.sendAllNamesFrom(SlackConfigurationService.defaultFileName);
+        return xpBotService.sendAllNames();
     }
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)

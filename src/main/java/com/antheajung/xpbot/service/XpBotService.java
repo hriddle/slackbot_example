@@ -33,10 +33,10 @@ public class XpBotService {
         this.slackConfigurationService = slackConfigurationService;
     }
 
-    public XpBotResponse sendAllNamesFrom(String fileName) {
-        List<String> listOfNamesFrom = getListOfNamesFrom(fileName);
+    public XpBotResponse sendAllNames() {
+        List<String> listOfNamesFrom = getListOfNames();
         List<String> names = emptyList();
-        if(!listOfNamesFrom.isEmpty()) {
+        if (!listOfNamesFrom.isEmpty()) {
             names = listOfNamesFrom.subList(1, listOfNamesFrom.size());
         }
         sendMessage(listOfNamesFrom);
@@ -52,7 +52,7 @@ public class XpBotService {
     }
 
     public XpBotResponse sendRandomName() {
-        List<String> listOfNames = getListOfNamesFrom(SlackConfigurationService.defaultFileName);
+        List<String> listOfNames = getListOfNames();
         String randomName = listOfNames.get(new Random().nextInt(listOfNames.size()));
         return sendAndCreateXpBotResponse(singletonList(randomName));
     }
@@ -65,10 +65,10 @@ public class XpBotService {
         return sendAndCreateXpBotResponse(singletonList(SlackConfigurationService.defaultRandomComment));
     }
 
-    private List<String> getListOfNamesFrom(String fileName) {
+    private List<String> getListOfNames() {
         List<String> listOfNames = emptyList();
 
-        URL url = getClass().getClassLoader().getResource(fileName);
+        URL url = getClass().getClassLoader().getResource(slackConfigurationService.getFileName());
         if (url != null) {
             File file = new File(url.getFile());
             if (file.exists()) {

@@ -34,7 +34,7 @@ public class XpBotControllerTest {
     @Test
     public void listNames_callsXpBotService() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/listAllNames"));
-        verify(xpBotService).sendAllNamesFrom(any());
+        verify(xpBotService).sendAllNames();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class XpBotControllerTest {
                 .message(singletonList("Anna"))
                 .build();
 
-        when(xpBotService.sendAllNamesFrom(any())).thenReturn(expectedResponse);
+        when(xpBotService.sendAllNames()).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/listAllNames"))
                 .andExpect(status().isOk())

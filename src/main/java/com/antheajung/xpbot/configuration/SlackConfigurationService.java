@@ -22,18 +22,15 @@ public class SlackConfigurationService {
     @Value("${slack.iconUrl}")
     public String iconUrl;
 
-    @Value("${slack.fileName}")
-    public String fileName;
-
     @Value("${slack.messageUrl}")
     public String messageUrl;
 
     @Value("${slack.rtmUrl}")
     public String rtmUrl;
 
-    public static String defaultFileName = "names.txt";
-
     public static String defaultGreetingMessage = "Hello! I'm XpBot";  //TODO
+
+    public static String defaultFileName = "names.txt";
 
     public static String defaultHelpMessage =
             "Usage: `@xpbot KEYWORD`\n\n" +
@@ -52,5 +49,9 @@ public class SlackConfigurationService {
 
     private String getStringFromList(List<String> message) {
         return String.join(", ", message);
+    }
+
+    public String getFileName() {
+        return defaultFileName;
     }
 }
