@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @Profile("test")
-public class SlackConfigurationServiceTest {
+public class XpBotServiceTest {
     private XpBotService xpBotService;
     private RestTemplate restTemplate;
     private SlackConfigurationService slackConfigurationService;

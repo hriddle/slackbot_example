@@ -6,3 +6,5 @@ slack:
     channel: ${SLACK_CHANNEL}
     iconUrl: ${SLACK_ICON_URL}
     fileName: ${SLACK_FILENAME}
+    rtmUrl: https://slack.com/api/rtm.connect?token=
+    messageUrl: https://slack.com/api/chat.postMessage?

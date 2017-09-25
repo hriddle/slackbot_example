@@ -2,6 +2,7 @@ package com.antheajung.xpbot.client;
 
 import com.antheajung.xpbot.configuration.SlackConfigurationService;
 import com.antheajung.xpbot.service.XpBotService;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ public class XpBotMessageHandler {
     private Logger logger = Logger.getLogger(XpBotMessageHandler.class.getName());
 
     private XpBotService xpBotService;
+
     private final RestTemplate restTemplate;
     private final SlackConfigurationService slackConfigurationService;
 
@@ -35,7 +37,7 @@ public class XpBotMessageHandler {
     }
 
     @OnMessage
-    public void onMessage(String message) throws IOException {
+    public void onMessage(String message) throws IOException, JSONException {
         if (!message.isEmpty()) {
             JSONObject messageAsJson = new JSONObject(message);
             if (messageAsJson.has("content")) {
