@@ -2,11 +2,13 @@ package com.antheajung.xpbot.domain;
 
 import java.util.List;
 
-public class XpBotResponse {
+public class XpBotResponse extends BotResponse {
     private List<String> message;
+    private MessageType type;
 
     private XpBotResponse(Builder builder) {
         this.message = builder.message;
+        this.type = builder.type;
     }
 
     public static Builder newXpBotResponse() {
@@ -15,6 +17,7 @@ public class XpBotResponse {
 
     public static final class Builder {
         private List<String> message;
+        private MessageType type;
 
         private Builder() {
         }
@@ -27,14 +30,11 @@ public class XpBotResponse {
             this.message = message;
             return this;
         }
-    }
 
-    public List<String> getMessage() {
-        return message;
-    }
-
-    public void setMessage(List<String> message) {
-        this.message = message;
+        public Builder type(MessageType type) {
+            this.type = type;
+            return this;
+        }
     }
 
     @Override
@@ -44,18 +44,30 @@ public class XpBotResponse {
 
         XpBotResponse that = (XpBotResponse) o;
 
-        return message != null ? message.equals(that.message) : that.message == null;
+        if (message != null ? !message.equals(that.message) : that.message != null) return false;
+        return type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return message != null ? message.hashCode() : 0;
+        int result = message != null ? message.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "XpBotResponse{" +
                 "message=" + message +
+                ", type=" + type +
                 '}';
+    }
+
+    public List<String> getMessage() {
+        return message;
+    }
+
+    public MessageType getType() {
+        return type;
     }
 }

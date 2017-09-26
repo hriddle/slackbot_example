@@ -1,0 +1,8 @@
+---
+applications:
+- name: xpbot_app
+  env:
+    SLACK_NAME:
+    SLACK_TOKEN:
+    SLACK_CHANNEL:
+    SLACK_ICON_URL:

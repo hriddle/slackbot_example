@@ -1,6 +1,8 @@
 package com.antheajung.xpbot.service;
 
-import com.antheajung.xpbot.configuration.SlackConfigurationService;
+import com.antheajung.xpbot.configuration.SlackConfiguration;
+import com.antheajung.xpbot.domain.BotResponse;
+import com.antheajung.xpbot.domain.MessageType;
 import com.antheajung.xpbot.domain.XpBotResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,12 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -24,23 +27,17 @@ public class XpBotService {
     private Logger logger = Logger.getLogger(XpBotService.class.getName());
 
     private final RestTemplate restTemplate;
-    private final SlackConfigurationService slackConfigurationService;
+    private final SlackConfiguration slackConfiguration;
 
     @Autowired
     public XpBotService(RestTemplate restTemplate,
-                        SlackConfigurationService slackConfigurationService) {
+                        SlackConfiguration slackConfiguration) {
         this.restTemplate = restTemplate;
-        this.slackConfigurationService = slackConfigurationService;
+        this.slackConfiguration = slackConfiguration;
     }
 
     public XpBotResponse sendAllNames() {
-        List<String> listOfNamesFrom = getListOfNames();
-        List<String> names = emptyList();
-        if (!listOfNamesFrom.isEmpty()) {
-            names = listOfNamesFrom.subList(1, listOfNamesFrom.size());
-        }
-        sendMessage(listOfNamesFrom);
-        return XpBotResponse.newXpBotResponse().message(names).build();
+        return sendAndCreateXpBotResponse(getListOfNames());
     }
 
     public XpBotResponse sendMessageAsBot(String message) {
@@ -48,7 +45,15 @@ public class XpBotService {
     }
 
     public XpBotResponse sendGreeting() {
-        return sendAndCreateXpBotResponse(singletonList(SlackConfigurationService.defaultGreetingMessage));
+        return sendAndCreateXpBotResponse(MessageType.GREETING);
+    }
+
+    public XpBotResponse sendHelp() {
+        return sendAndCreateXpBotResponse(MessageType.HELP);
+    }
+
+    public XpBotResponse sendRandomComment() {
+        return sendAndCreateXpBotResponse(MessageType.RANDOM_EMOJI);
     }
 
     public XpBotResponse sendRandomName() {
@@ -57,27 +62,30 @@ public class XpBotService {
         return sendAndCreateXpBotResponse(singletonList(randomName));
     }
 
-    public XpBotResponse sendHelp() {
-        return sendAndCreateXpBotResponse(singletonList(SlackConfigurationService.defaultHelpMessage));
-    }
+    public XpBotResponse sendRandomNames(int number) {
+        List<String> listOfNames = new ArrayList<>(getListOfNames());
 
-    public XpBotResponse sendTaco() {
-        return sendAndCreateXpBotResponse(singletonList(SlackConfigurationService.defaultRandomComment));
+        List<String> chosenNames = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            int randomNumber = new Random().nextInt(listOfNames.size());
+            String randomName = listOfNames.get(randomNumber);
+            listOfNames.remove(randomNumber);
+            chosenNames.add(randomName);
+        }
+        return sendAndCreateXpBotResponse(chosenNames);
     }
 
     private List<String> getListOfNames() {
         List<String> listOfNames = emptyList();
 
-        URL url = getClass().getClassLoader().getResource(slackConfigurationService.getFileName());
+        URL url = getClass().getClassLoader().getResource(BotResponse.defaultFileName);
         if (url != null) {
             File file = new File(url.getFile());
             if (file.exists()) {
                 try {
-                    String[] names = ("*Here is a list of names* \n"
-                            + new String(Files.readAllBytes(file.toPath()), "UTF-8"))
-                            .split("\n");
-
-                    listOfNames = Arrays.asList(names);
+                    String[] names = new String(Files.readAllBytes(file.toPath()), "UTF-8").split("\n");
+                    listOfNames = asList(names);
+                    logger.log(Level.INFO, "** Read File: " + listOfNames + " **");
                 } catch (IOException ignored) {
                     logger.log(Level.INFO, "** Error reading file **");
                 }
@@ -88,13 +96,21 @@ public class XpBotService {
         return listOfNames;
     }
 
-    private void sendMessage(List<String> message) {
-        String url = slackConfigurationService.getUrl(message);
+    private void sendMessage(XpBotResponse xpBotResponse) {
+        String url = slackConfiguration.getUrl(xpBotResponse.getMessage());
         restTemplate.postForLocation(url, "");
     }
 
     private XpBotResponse sendAndCreateXpBotResponse(List<String> response) {
-        sendMessage(response);
-        return XpBotResponse.newXpBotResponse().message(response).build();
+        XpBotResponse xpBotResponse = XpBotResponse.newXpBotResponse()
+                .message(response).build();
+        sendMessage(xpBotResponse);
+        return xpBotResponse;
+    }
+
+    private XpBotResponse sendAndCreateXpBotResponse(MessageType type) {
+        XpBotResponse xpBotResponse = type.getMessage();
+        sendMessage(xpBotResponse);
+        return xpBotResponse;
     }
 }

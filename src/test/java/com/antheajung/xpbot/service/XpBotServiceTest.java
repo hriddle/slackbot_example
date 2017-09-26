@@ -1,6 +1,7 @@
 package com.antheajung.xpbot.service;
 
-import com.antheajung.xpbot.configuration.SlackConfigurationService;
+import com.antheajung.xpbot.configuration.SlackConfiguration;
+import com.antheajung.xpbot.domain.BotResponse;
 import com.antheajung.xpbot.domain.XpBotResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.Collections;
 
@@ -25,29 +27,28 @@ import static org.mockito.Mockito.*;
 public class XpBotServiceTest {
     private XpBotService xpBotService;
     private RestTemplate restTemplate;
-    private SlackConfigurationService slackConfigurationService;
+    private SlackConfiguration slackConfiguration;
 
     @Before
     public void setUp() throws Exception {
         restTemplate = mock(RestTemplate.class);
-        slackConfigurationService = mock(SlackConfigurationService.class);
+        slackConfiguration = mock(SlackConfiguration.class);
 
-        xpBotService = new XpBotService(restTemplate, slackConfigurationService);
+        xpBotService = new XpBotService(restTemplate, slackConfiguration);
 
         when(restTemplate.postForLocation(any(), any())).thenReturn(URI.create(""));
     }
 
     @Test
     public void sendAllNames_makesAPostRequest() throws IOException {
-        when(slackConfigurationService.getFileName()).thenReturn("names-test.txt");
-
         xpBotService.sendAllNames();
         verify(restTemplate).postForLocation(anyString(), anyString());
     }
 
     @Test
-    public void sendAllNames_returnsListOfNamesWhenFileExists() throws IOException {
-        when(slackConfigurationService.getFileName()).thenReturn("names-test.txt");
+    public void sendAllNames_returnsListOfNamesWhenFileExists() throws IOException, NoSuchFieldException, IllegalAccessException {
+        Field defaultFileName = BotResponse.class.getDeclaredField("defaultFileName");
+        defaultFileName.set(defaultFileName, "names-test.txt");
 
         XpBotResponse actualResponse = xpBotService.sendAllNames();
 
@@ -62,7 +63,7 @@ public class XpBotServiceTest {
 
     @Test
     public void sendAllNames_returnsEmptyListWhenFileDoesNotExist() throws IOException {
-        when(slackConfigurationService.getFileName()).thenReturn("fileDoesNotExist.txt");
+        BotResponse.defaultFileName = "fileDoesNotExist.txt";
 
         XpBotResponse actualResponse = xpBotService.sendAllNames();
 
@@ -77,6 +78,6 @@ public class XpBotServiceTest {
     public void sendMessageAsBot_makesAPostRequest() throws IOException {
         String message = "This is the message";
         xpBotService.sendMessageAsBot(message);
-        verify(restTemplate).postForLocation(slackConfigurationService.getUrl(singletonList(message)), "");
+        verify(restTemplate).postForLocation(slackConfiguration.getUrl(singletonList(message)), "");
     }
 }

@@ -1,5 +1,4 @@
 slack:
-    url: ${SLACK_URL}
     name: ${SLACK_NAME}
     token: ${SLACK_TOKEN}
     emoji: ${SLACK_EMOJI}
