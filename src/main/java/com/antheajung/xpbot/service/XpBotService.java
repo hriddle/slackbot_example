@@ -67,7 +67,10 @@ public class XpBotService {
 
         List<String> chosenNames = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            int randomNumber = new Random().nextInt(listOfNames.size());
+            int randomNumber = 0;
+            if(number != 1) {
+                randomNumber = new Random().nextInt(listOfNames.size());
+            }
             String randomName = listOfNames.get(randomNumber);
             listOfNames.remove(randomNumber);
             chosenNames.add(randomName);

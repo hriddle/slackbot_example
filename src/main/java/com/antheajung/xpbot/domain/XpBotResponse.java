@@ -2,7 +2,7 @@ package com.antheajung.xpbot.domain;
 
 import java.util.List;
 
-public class XpBotResponse extends BotResponse {
+public class XpBotResponse {
     private List<String> message;
     private MessageType type;
 

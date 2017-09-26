@@ -2,6 +2,7 @@ package com.antheajung.xpbot.service;
 
 import com.antheajung.xpbot.configuration.SlackConfiguration;
 import com.antheajung.xpbot.domain.BotResponse;
+import com.antheajung.xpbot.domain.MessageType;
 import com.antheajung.xpbot.domain.XpBotResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,7 @@ public class XpBotServiceTest {
     }
 
     @Test
-    public void sendAllNames_returnsListOfNamesWhenFileExists() throws IOException, NoSuchFieldException, IllegalAccessException {
+    public void sendAllNames_returnsXpBotResponseWithAListOfNamesWhenFileExists() throws IOException, NoSuchFieldException, IllegalAccessException {
         Field defaultFileName = BotResponse.class.getDeclaredField("defaultFileName");
         defaultFileName.set(defaultFileName, "names-test.txt");
 
@@ -62,8 +63,9 @@ public class XpBotServiceTest {
     }
 
     @Test
-    public void sendAllNames_returnsEmptyListWhenFileDoesNotExist() throws IOException {
-        BotResponse.defaultFileName = "fileDoesNotExist.txt";
+    public void sendAllNames_returnsXpBotResponseEmptyListWhenFileDoesNotExist() throws IOException, NoSuchFieldException, IllegalAccessException {
+        Field defaultFileName = BotResponse.class.getDeclaredField("defaultFileName");
+        defaultFileName.set(defaultFileName, "fileDoesNotExist.txt");
 
         XpBotResponse actualResponse = xpBotService.sendAllNames();
 
@@ -79,5 +81,66 @@ public class XpBotServiceTest {
         String message = "This is the message";
         xpBotService.sendMessageAsBot(message);
         verify(restTemplate).postForLocation(slackConfiguration.getUrl(singletonList(message)), "");
+    }
+
+    @Test
+    public void sendMessageAsBot_returnsXpBotResponseWithTheMessage() throws IOException {
+        String message = "This is the message";
+        XpBotResponse actualResponse = xpBotService.sendMessageAsBot(message);
+
+        XpBotResponse expectedResponse = XpBotResponse.newXpBotResponse()
+                .message(singletonList(message))
+                .build();
+
+        assertThat(actualResponse).isEqualTo(expectedResponse);
+    }
+
+    @Test
+    public void sendGreeting_makesAPostRequestWithDefaultGreeting() throws IOException {
+        xpBotService.sendGreeting();
+        verify(restTemplate).postForLocation(
+                slackConfiguration.getUrl(singletonList(BotResponse.defaultGreetingMessage)), "");
+    }
+
+    @Test
+    public void sendGreeting_returnsXpBotResponseWithDefaultGreetingAndMediaTypeGreeting() throws IOException {
+        XpBotResponse actualResponse = xpBotService.sendGreeting();
+
+        XpBotResponse expectedResponse = XpBotResponse.newXpBotResponse()
+                .message(singletonList(BotResponse.defaultGreetingMessage))
+                .type(MessageType.GREETING)
+                .build();
+
+        assertThat(actualResponse).isEqualTo(expectedResponse);
+    }
+
+    @Test
+    public void sendHelp_makesAPostRequestWithDefaultHelp() throws IOException {
+        xpBotService.sendHelp();
+        verify(restTemplate).postForLocation(
+                slackConfiguration.getUrl(singletonList(BotResponse.defaultHelpMessage)), "");
+    }
+
+    @Test
+    public void sendHelp_returnsXpBotResponseWithDefaultHelpAndMediaTypeHelp() throws IOException {
+        XpBotResponse actualResponse = xpBotService.sendHelp();
+
+        XpBotResponse expectedResponse = XpBotResponse.newXpBotResponse()
+                .message(singletonList(BotResponse.defaultHelpMessage))
+                .type(MessageType.HELP)
+                .build();
+
+        assertThat(actualResponse).isEqualTo(expectedResponse);
+    }
+    
+    @Test
+    public void sendRandomNames_returnsXpBotResponseWithSameNumberOfNamesAsRequested() throws IOException, NoSuchFieldException, IllegalAccessException {
+        Field defaultFileName = BotResponse.class.getDeclaredField("defaultFileName");
+        defaultFileName.set(defaultFileName, "names-test.txt");
+
+        XpBotResponse actualResponse = xpBotService.sendRandomNames(2);
+
+        assertThat(actualResponse).isInstanceOf(XpBotResponse.class);
+        assertThat(actualResponse.getMessage()).hasSize(2);
     }
 }
