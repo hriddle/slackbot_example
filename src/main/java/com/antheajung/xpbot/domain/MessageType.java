@@ -1,30 +1,30 @@
 package com.antheajung.xpbot.domain;
 
-import java.util.Collections;
-import java.util.List;
+import static com.antheajung.xpbot.domain.XpBotUtil.DEFAULT_GREETING_MESSAGE;
+import static com.antheajung.xpbot.domain.XpBotUtil.DEFAULT_HELP_MESSAGE;
+import static com.antheajung.xpbot.domain.XpBotUtil.getRandomEmoji;
 
 public enum MessageType {
     GREETING,
     HELP,
-    RANDOM_EMOJI;
+    RANDOM_EMOJI,
+    LIST_OF_NAMES,
+    MESSAGE,
+    ERROR;
 
-    public XpBotResponse getMessage() {
-        List<String> message = Collections.emptyList();
+    public String getMessage() {
+        String message = "";
         switch (this) {
             case GREETING:
-                message = Collections.singletonList(BotResponse.defaultGreetingMessage);
+                message = DEFAULT_GREETING_MESSAGE;
                 break;
             case HELP:
-                message = Collections.singletonList(BotResponse.defaultHelpMessage);
+                message = DEFAULT_HELP_MESSAGE;
                 break;
             case RANDOM_EMOJI:
-                message = Collections.singletonList(BotResponse.getRandomEmoji());
+                message = getRandomEmoji();
                 break;
         }
-
-        return XpBotResponse.newXpBotResponse()
-                .message(message)
-                .type(this)
-                .build();
+        return message;
     }
 }

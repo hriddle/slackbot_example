@@ -1,0 +1,6 @@
+slack:
+    name: test-slack-bot-name
+    token: test-slack-bot-token
+    iconUrl: test-slack-bot-icon-url
+    rtmUrl: test-slack-rtm-url
+    messageUrl: test-slack-message-url

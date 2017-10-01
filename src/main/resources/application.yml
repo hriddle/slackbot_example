@@ -1,8 +1,6 @@
 slack:
     name: ${SLACK_NAME}
     token: ${SLACK_TOKEN}
-    emoji: ${SLACK_EMOJI}
-    channel: ${SLACK_CHANNEL}
     iconUrl: ${SLACK_ICON_URL}
     rtmUrl: https://slack.com/api/rtm.connect?token=
     messageUrl: https://slack.com/api/chat.postMessage?

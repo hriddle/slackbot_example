@@ -4,14 +4,18 @@ version '1.0-SNAPSHOT'
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE'
+        classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-idea'
 
 sourceCompatibility = 1.8
 
@@ -23,5 +27,14 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE'
     compile 'org.json:json:20170516'
 
+    //configuration properties annotation
+    optional "org.springframework.boot:spring-boot-configuration-processor"
+
+    // swagger
+    compile "io.springfox:springfox-swagger2:2.7.0"
+    compile "io.springfox:springfox-swagger-ui:2.7.0"
+
     testCompile 'org.springframework.boot:spring-boot-starter-test:1.5.4.RELEASE'
 }
+
+compileJava.dependsOn(processResources)

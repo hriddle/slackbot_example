@@ -1,9 +1,7 @@
 package com.antheajung.xpbot.domain;
 
-import java.util.List;
-
 public class XpBotResponse {
-    private List<String> message;
+    private String message;
     private MessageType type;
 
     private XpBotResponse(Builder builder) {
@@ -15,8 +13,9 @@ public class XpBotResponse {
         return new Builder();
     }
 
+
     public static final class Builder {
-        private List<String> message;
+        private String message;
         private MessageType type;
 
         private Builder() {
@@ -26,7 +25,7 @@ public class XpBotResponse {
             return new XpBotResponse(this);
         }
 
-        public Builder message(List<String> message) {
+        public Builder message(String message) {
             this.message = message;
             return this;
         }
@@ -35,6 +34,14 @@ public class XpBotResponse {
             this.type = type;
             return this;
         }
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public MessageType getType() {
+        return type;
     }
 
     @Override
@@ -53,21 +60,5 @@ public class XpBotResponse {
         int result = message != null ? message.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "XpBotResponse{" +
-                "message=" + message +
-                ", type=" + type +
-                '}';
-    }
-
-    public List<String> getMessage() {
-        return message;
-    }
-
-    public MessageType getType() {
-        return type;
     }
 }

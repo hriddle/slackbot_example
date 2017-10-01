@@ -1,8 +1,0 @@
-slack:
-    channel: channel-test
-    emoji: emoji-test
-    iconUrl: icon-url-test
-    name: xpbot-test
-    token: token-test
-    messageUrl: message-url-test
-    rtmUrl: rtm-url-test

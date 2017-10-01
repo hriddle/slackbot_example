@@ -1,13 +1,11 @@
 package com.antheajung.xpbot.service;
 
-import com.antheajung.xpbot.configuration.SlackConfiguration;
-import com.antheajung.xpbot.domain.BotResponse;
 import com.antheajung.xpbot.domain.MessageType;
-import com.antheajung.xpbot.domain.XpBotResponse;
+import com.antheajung.xpbot.domain.XpBotRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import javax.websocket.Session;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -20,68 +18,77 @@ import java.util.logging.Logger;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 @Service
 public class XpBotService {
     private Logger logger = Logger.getLogger(XpBotService.class.getName());
-
-    private final RestTemplate restTemplate;
-    private final SlackConfiguration slackConfiguration;
+    private BotClient botClient;
 
     @Autowired
-    public XpBotService(RestTemplate restTemplate,
-                        SlackConfiguration slackConfiguration) {
-        this.restTemplate = restTemplate;
-        this.slackConfiguration = slackConfiguration;
+    public XpBotService(BotClient botClient) {
+        this.botClient = botClient;
     }
 
-    public XpBotResponse sendAllNames() {
-        return sendAndCreateXpBotResponse(getListOfNames());
+    public String sendAllNames() {
+        return getListOfNames().toString()
+                .replace("[", "")
+                .replace("]", "");
     }
 
-    public XpBotResponse sendMessageAsBot(String message) {
-        return sendAndCreateXpBotResponse(singletonList(message));
+    public String sendMessageAsBot(XpBotRequest xpBotRequest) {
+        botClient.sendMessage(xpBotRequest);
+        return xpBotRequest.getMessage();
     }
 
-    public XpBotResponse sendGreeting() {
-        return sendAndCreateXpBotResponse(MessageType.GREETING);
+    public void sendGreeting(XpBotRequest xpBotRequest) {
+        xpBotRequest.setMessage(MessageType.GREETING.getMessage());
+        botClient.sendMessage(xpBotRequest);
     }
 
-    public XpBotResponse sendHelp() {
-        return sendAndCreateXpBotResponse(MessageType.HELP);
+    public void sendHelp(XpBotRequest xpBotRequest) {
+        xpBotRequest.setMessage(MessageType.HELP.getMessage());
+        botClient.sendMessage(xpBotRequest);
     }
 
-    public XpBotResponse sendRandomComment() {
-        return sendAndCreateXpBotResponse(MessageType.RANDOM_EMOJI);
+    public void sendRandomComment(XpBotRequest xpBotRequest) {
+        xpBotRequest.setMessage(MessageType.RANDOM_EMOJI.getMessage());
+        botClient.sendMessage(xpBotRequest);
     }
 
-    public XpBotResponse sendRandomName() {
+    public void sendRandomName(XpBotRequest xpBotRequest) {
         List<String> listOfNames = getListOfNames();
-        String randomName = listOfNames.get(new Random().nextInt(listOfNames.size()));
-        return sendAndCreateXpBotResponse(singletonList(randomName));
+        String randomName = listOfNames.get(
+                new Random().nextInt(listOfNames.size()));
+
+        xpBotRequest.setMessage(randomName);
+        botClient.sendMessage(xpBotRequest);
     }
 
-    public XpBotResponse sendRandomNames(int number) {
+    public void sendRandomNames(int number, XpBotRequest xpBotRequest) {
         List<String> listOfNames = new ArrayList<>(getListOfNames());
 
         List<String> chosenNames = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             int randomNumber = 0;
-            if(number != 1) {
+            if (number != 1) {
                 randomNumber = new Random().nextInt(listOfNames.size());
             }
             String randomName = listOfNames.get(randomNumber);
             listOfNames.remove(randomNumber);
             chosenNames.add(randomName);
         }
-        return sendAndCreateXpBotResponse(chosenNames);
+
+        xpBotRequest.setMessage(chosenNames.toString()
+                .replace("[", "")
+                .replace("]", ""));
+
+        botClient.sendMessage(xpBotRequest);
     }
 
     private List<String> getListOfNames() {
         List<String> listOfNames = emptyList();
 
-        URL url = getClass().getClassLoader().getResource(BotResponse.defaultFileName);
+        URL url = getClass().getClassLoader().getResource("names.txt");
         if (url != null) {
             File file = new File(url.getFile());
             if (file.exists()) {
@@ -97,23 +104,5 @@ public class XpBotService {
             }
         }
         return listOfNames;
-    }
-
-    private void sendMessage(XpBotResponse xpBotResponse) {
-        String url = slackConfiguration.getUrl(xpBotResponse.getMessage());
-        restTemplate.postForLocation(url, "");
-    }
-
-    private XpBotResponse sendAndCreateXpBotResponse(List<String> response) {
-        XpBotResponse xpBotResponse = XpBotResponse.newXpBotResponse()
-                .message(response).build();
-        sendMessage(xpBotResponse);
-        return xpBotResponse;
-    }
-
-    private XpBotResponse sendAndCreateXpBotResponse(MessageType type) {
-        XpBotResponse xpBotResponse = type.getMessage();
-        sendMessage(xpBotResponse);
-        return xpBotResponse;
     }
 }
