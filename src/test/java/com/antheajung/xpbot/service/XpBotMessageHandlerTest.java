@@ -1,9 +1,7 @@
-package com.antheajung.xpbot.client;
+package com.antheajung.xpbot.service;
 
 import com.antheajung.xpbot.configuration.SlackProperties;
 import com.antheajung.xpbot.domain.XpBotRequest;
-import com.antheajung.xpbot.service.XpBotMessageHandler;
-import com.antheajung.xpbot.service.XpBotService;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -25,7 +23,7 @@ public class XpBotMessageHandlerTest {
     private SlackProperties slackProperties;
 
     private XpBotMessageHandler subject;
-    private String defaultChannel = "";
+    private String defaultChannel;
 
     @Before
     public void setUp() throws Exception {
@@ -33,6 +31,8 @@ public class XpBotMessageHandlerTest {
         slackProperties = mock(SlackProperties.class);
 
         subject = new XpBotMessageHandler(xpBotService, slackProperties);
+
+        defaultChannel = "";
 
         when(slackProperties.getRtmUrlWithToken()).thenReturn("test");
     }

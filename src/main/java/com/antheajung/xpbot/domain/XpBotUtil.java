@@ -31,6 +31,7 @@ public final class XpBotUtil {
     public final static String EMOJI_MONEYBAG = ":moneybag:";
     public final static String EMOJI_BLUEHEART = ":blue_heart:";
 
+    public final static String DEFAULT_STANDUP_MESSAGE = "<!here> It's stand up time!";
     public final static String DEFAULT_GREETING_MESSAGE = "Hello. I'm XpBot";
     public final static String DEFAULT_HELP_MESSAGE =
             "Usage: `@xpbot keyword [keyword options]`\n\n" +
@@ -53,6 +54,6 @@ public final class XpBotUtil {
         );
 
         Collections.shuffle(randomEmojis);
-        return "Thanks! Here is a " + randomEmojis.get(0);
+        return "Thanks! Have this " + randomEmojis.get(0);
     }
 }

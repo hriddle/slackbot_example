@@ -6,3 +6,4 @@ application-local.yml
 application-actual.yml
 names-actual.txt
 manifest-actual.yml
+ci
