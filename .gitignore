@@ -6,4 +6,5 @@ application-local.yml
 application-actual.yml
 names-actual.txt
 manifest-actual.yml
-ci
+ci/pipeline.yml
+ci/standup-reminder
