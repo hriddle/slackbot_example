@@ -1,8 +1,6 @@
 package com.antheajung.xpbot.domain;
 
-import static com.antheajung.xpbot.domain.XpBotUtil.DEFAULT_GREETING_MESSAGE;
-import static com.antheajung.xpbot.domain.XpBotUtil.DEFAULT_HELP_MESSAGE;
-import static com.antheajung.xpbot.domain.XpBotUtil.getRandomEmoji;
+import static com.antheajung.xpbot.domain.XpBotUtil.*;
 
 public enum MessageType {
     GREETING,
@@ -10,7 +8,8 @@ public enum MessageType {
     RANDOM_EMOJI,
     LIST_OF_NAMES,
     MESSAGE,
-    ERROR;
+    ERROR,
+    STAND_UP;
 
     public String getMessage() {
         String message = "";
@@ -23,6 +22,9 @@ public enum MessageType {
                 break;
             case RANDOM_EMOJI:
                 message = getRandomEmoji();
+                break;
+            case STAND_UP:
+                message = DEFAULT_STANDUP_MESSAGE;
                 break;
         }
         return message;

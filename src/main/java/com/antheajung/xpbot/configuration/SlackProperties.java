@@ -12,6 +12,7 @@ public class SlackProperties {
     public String iconUrl;
     public String messageUrl;
     public String rtmUrl;
+    public String generalChannel;
 
     public String getPostMessageUrl(XpBotRequest xpBotRequest) {
         return messageUrl + "token=" + token + "&channel=" + xpBotRequest.getChannel()
@@ -60,5 +61,13 @@ public class SlackProperties {
 
     public void setRtmUrl(String rtmUrl) {
         this.rtmUrl = rtmUrl;
+    }
+
+    public String getGeneralChannel() {
+        return generalChannel;
+    }
+
+    public void setGeneralChannel(String generalChannel) {
+        this.generalChannel = generalChannel;
     }
 }

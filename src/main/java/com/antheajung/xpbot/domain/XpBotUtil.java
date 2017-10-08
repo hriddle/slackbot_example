@@ -23,10 +23,15 @@ public final class XpBotUtil {
 
     public final static String KEYWORD_TACO = ":taco:";
 
+    public final static String KEYWORD_MONDAY = "monday";
+    public final static String KEYWORD_TUESDAY = "tuesday";
+    public final static String KEYWORD_WEDNESDAY = "wednesday";
+    public final static String KEYWORD_THURSDAY = "thursday";
+    public final static String KEYWORD_FRIDAY = "friday";
+
     public final static String EMOJI_TACO = ":taco:";
     public final static String EMOJI_PINEAPPLE = ":pineapple:";
     public final static String EMOJI_CHEESE = ":cheese_wedge:";
-    public final static String EMOJI_BABYBOTTLE = ":baby_bottle:";
     public final static String EMOJI_ROSE = ":rose:";
     public final static String EMOJI_MONEYBAG = ":moneybag:";
     public final static String EMOJI_BLUEHEART = ":blue_heart:";
@@ -47,7 +52,6 @@ public final class XpBotUtil {
                 EMOJI_TACO,
                 EMOJI_PINEAPPLE,
                 EMOJI_CHEESE,
-                EMOJI_BABYBOTTLE,
                 EMOJI_ROSE,
                 EMOJI_MONEYBAG,
                 EMOJI_BLUEHEART

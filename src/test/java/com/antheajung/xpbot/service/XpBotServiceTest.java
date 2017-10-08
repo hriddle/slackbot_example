@@ -95,4 +95,14 @@ public class XpBotServiceTest {
         xpBotService.sendRandomNames(2, xpBotRequest);
         verify(botClient).sendMessage(xpBotRequest);
     }
+
+    @Test
+    public void sendStandUpReminder_callsBotClientWithStandUpMessage() {
+        XpBotRequest xpBotRequest = XpBotRequest.newXpBotRequest()
+                .message(MessageType.STAND_UP.getMessage())
+                .build();
+
+        xpBotService.sendStandUpReminder(xpBotRequest);
+        verify(botClient).sendMessage(xpBotRequest);
+    }
 }

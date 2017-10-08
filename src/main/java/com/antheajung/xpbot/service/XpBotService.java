@@ -5,7 +5,6 @@ import com.antheajung.xpbot.domain.XpBotRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.websocket.Session;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -61,6 +60,11 @@ public class XpBotService {
                 new Random().nextInt(listOfNames.size()));
 
         xpBotRequest.setMessage(randomName);
+        botClient.sendMessage(xpBotRequest);
+    }
+
+    public void sendStandUpReminder(XpBotRequest xpBotRequest) {
+        xpBotRequest.setMessage(MessageType.STAND_UP.getMessage());
         botClient.sendMessage(xpBotRequest);
     }
 

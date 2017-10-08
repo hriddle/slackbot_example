@@ -10,7 +10,11 @@ import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +33,8 @@ public class XpBotMessageHandler {
         this.xpBotService = xpBotService;
         this.slackProperties = slackProperties;
         this.session = connect();
+
+        setStandUpReminder();
     }
 
     @OnMessage
@@ -53,6 +59,11 @@ public class XpBotMessageHandler {
                 }
             }
         }
+    }
+
+    @OnOpen
+    public void onOpen(Session session) {
+        this.session = session;
     }
 
     @OnClose
@@ -110,6 +121,35 @@ public class XpBotMessageHandler {
         } else {
             logger.log(Level.INFO, "** Keyword unknown **");
         }
+    }
+
+    private void setStandUpReminder() {
+        Calendar standUpTime = Calendar.getInstance();
+        standUpTime.set(Calendar.HOUR_OF_DAY, 8);
+        standUpTime.set(Calendar.MINUTE, 5);
+        standUpTime.set(Calendar.SECOND, 30);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+                           @Override
+                           public void run() {
+                               Calendar calendar = Calendar.getInstance();
+                               int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+                               if (day > 0 && day < 6) createStanUpReminder();
+                           }
+                       },
+                standUpTime.getTime(),
+                TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+    }
+
+    private void createStanUpReminder() {
+        XpBotRequest xpBotRequest = XpBotRequest.newXpBotRequest()
+                .channel(slackProperties.generalChannel)
+                .build();
+
+        logger.log(Level.INFO, "** Sending stand up reminder **");
+        xpBotService.sendStandUpReminder(xpBotRequest);
     }
 
     private Session connect() {

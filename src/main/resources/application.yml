@@ -4,3 +4,4 @@ slack:
     iconUrl: ${SLACK_ICON_URL}
     rtmUrl: https://slack.com/api/rtm.connect?token=
     messageUrl: https://slack.com/api/chat.postMessage?
+    generalChannel: ${SLACK_GENERAL_CHANNEL}
