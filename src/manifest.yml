@@ -5,3 +5,4 @@ applications:
     SLACK_NAME:
     SLACK_TOKEN:
     SLACK_ICON_URL:
+    SLACK_GENERAL_CHANNEL:
