@@ -85,7 +85,7 @@ public class XpBotMessageHandler {
             logger.log(Level.INFO, "** Sending a greeting **");
             xpBotService.sendGreeting(xpBotRequest);
 
-        } else if (message.contains(KEYWORD_CHOOSE)) {
+        } else if (message.contains(DIRECT_MESSAGE_CMD + " " + KEYWORD_CHOOSE)) {
             if (message.contains(KEYWORD_CHOOSE + " " + KEYWORD_TWO + " ")
                     || message.endsWith(KEYWORD_CHOOSE + " " + KEYWORD_TWO)
                     || message.contains(KEYWORD_CHOOSE + " " + KEYWORD_2 + " ")
@@ -108,12 +108,12 @@ public class XpBotMessageHandler {
                 xpBotService.sendRandomName(xpBotRequest);
             }
 
-        } else if (message.contains(KEYWORD_HELP)) {
+        } else if (message.contains(DIRECT_MESSAGE_CMD + " " + KEYWORD_HELP)) {
 
             logger.log(Level.INFO, "** Sending help instruction **");
             xpBotService.sendHelp(xpBotRequest);
 
-        } else if (message.contains(KEYWORD_TACO)) {
+        } else if (message.contains(DIRECT_MESSAGE_CMD + " " + KEYWORD_TACO)) {
 
             logger.log(Level.INFO, "** Sending an emoji **");
             xpBotService.sendRandomComment(xpBotRequest);

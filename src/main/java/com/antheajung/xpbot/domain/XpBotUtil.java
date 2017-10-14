@@ -41,8 +41,7 @@ public final class XpBotUtil {
     public final static String DEFAULT_HELP_MESSAGE =
             "Usage: `@xpbot keyword [keyword options]`\n\n" +
                     "Keywords:\n" +
-                    "*choose*\tPick a random name, takes (2 or 3) as an option\n" +
-                    "`@xpbot choose 2`";
+                    "*choose*\tPick a random name, takes (2 or 3) as an option\n";
 
     private XpBotUtil() {
     }

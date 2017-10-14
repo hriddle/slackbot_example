@@ -1,6 +1,6 @@
 ---
 applications:
-- name: xpbot_app
+- name: xpbot
   env:
     SLACK_NAME:
     SLACK_TOKEN:
