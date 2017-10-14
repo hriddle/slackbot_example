@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -64,11 +65,25 @@ public class XpBotService {
     }
 
     public void sendStandUpReminder(XpBotRequest xpBotRequest) {
-        xpBotRequest.setMessage(MessageType.STAND_UP.getMessage());
+        String currentDay = LocalDate.now().getDayOfWeek().name().toLowerCase();
+        String day = currentDay.substring(0, 1).toUpperCase() + currentDay.substring(1, currentDay.length());
+        String[] names = getNames(3).split(",");
+
+        String standUpMessageWithNames = MessageType.STAND_UP.getMessage() + "\n"
+                + "*" + names[0] + "*: " + "You have been chosen to run stand up! Happy " + day + "\n"
+                + "Backup: *" + names[1] + "*, *" + names[2] + "*";
+
+        xpBotRequest.setMessage(standUpMessageWithNames);
         botClient.sendMessage(xpBotRequest);
     }
 
     public void sendRandomNames(int number, XpBotRequest xpBotRequest) {
+        String chosenNames = getNames(number);
+        xpBotRequest.setMessage(chosenNames);
+        botClient.sendMessage(xpBotRequest);
+    }
+
+    private String getNames(int number) {
         List<String> listOfNames = new ArrayList<>(getListOfNames());
 
         List<String> chosenNames = new ArrayList<>();
@@ -82,11 +97,9 @@ public class XpBotService {
             chosenNames.add(randomName);
         }
 
-        xpBotRequest.setMessage(chosenNames.toString()
+        return chosenNames.toString()
                 .replace("[", "")
-                .replace("]", ""));
-
-        botClient.sendMessage(xpBotRequest);
+                .replace("]", "");
     }
 
     private List<String> getListOfNames() {

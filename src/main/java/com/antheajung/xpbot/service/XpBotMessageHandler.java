@@ -136,14 +136,14 @@ public class XpBotMessageHandler {
                                Calendar calendar = Calendar.getInstance();
                                int day = calendar.get(Calendar.DAY_OF_WEEK);
 
-                               if (day > 0 && day < 6) createStanUpReminder();
+                               if (day > 0 && day < 6) createStandUpReminder();
                            }
                        },
                 standUpTime.getTime(),
                 TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
 
-    private void createStanUpReminder() {
+    private void createStandUpReminder() {
         XpBotRequest xpBotRequest = XpBotRequest.newXpBotRequest()
                 .channel(slackProperties.generalChannel)
                 .build();
