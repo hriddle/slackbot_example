@@ -4,9 +4,11 @@ import com.antheajung.xpbot.configuration.SlackProperties;
 import com.antheajung.xpbot.domain.XpBotRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component

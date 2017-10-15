@@ -118,16 +118,6 @@ public class XpBotMessageHandler {
         }
     }
 
-    @Scheduled(cron = "5 8 * * 1-5", zone = "CST")
-    private void sendScheduledStandUpReminder() {
-        XpBotRequest xpBotRequest = XpBotRequest.newXpBotRequest()
-                .channel(slackProperties.generalChannel)
-                .build();
-
-        logger.log(Level.INFO, "** Sending stand up reminder **");
-        xpBotService.sendStandUpReminder(xpBotRequest);
-    }
-
     private Session connect() {
         RestTemplate restTemplate = new RestTemplate();
         String url = slackProperties.getRtmUrlWithToken();
