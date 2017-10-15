@@ -30,8 +30,6 @@ public class XpBotMessageHandler {
         this.xpBotService = xpBotService;
         this.slackProperties = slackProperties;
         this.session = connect();
-
-        sendScheduledStandUpReminder();
     }
 
     @OnMessage
@@ -120,7 +118,7 @@ public class XpBotMessageHandler {
         }
     }
 
-    @Scheduled(cron = "5 8 * * 1-5 *", zone = "America/Chicago")
+    @Scheduled(cron = "5 8 * * 1-5", zone = "CST")
     private void sendScheduledStandUpReminder() {
         XpBotRequest xpBotRequest = XpBotRequest.newXpBotRequest()
                 .channel(slackProperties.generalChannel)
