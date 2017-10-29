@@ -2,11 +2,7 @@
 .idea
 build
 out
-application-local.yml
-application-actual.yml
-names-actual.txt
+name-actual.txt
 manifest-actual.yml
 manifest-local.yml
-ci/pipeline.yml
-ci/standup-reminder
 xpbot.iml

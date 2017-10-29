@@ -24,7 +24,8 @@ public class XpBotServiceTest {
     @Test
     public void sendAllNames_returnsAListOfNamesFromAFile() {
         String names = xpBotService.sendAllNames();
-        assertThat(names).isEqualTo("TestName1, TestName2, TestName3, TestName4");
+        assertThat(names)
+                .isEqualTo("TestName1 = UserID1, TestName2 = UserID2, TestName3 = UserID3, TestName4 = UserID4");
     }
 
     @Test
