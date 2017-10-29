@@ -69,13 +69,13 @@ public class XpBotService {
         String day = currentDay.substring(0, 1).toUpperCase() + currentDay.substring(1, currentDay.length());
         String[] names = getNames(3).split(",");
 
-        String firstUsername = names[0].split(" = ")[1];
-        String secondUsername = names[1].split(" = ")[0];
-        String thirdUsername = names[2].split(" = ")[0];
+        String firstUsername = "@" + names[0].split(" = ")[1];
+        String secondUsername = names[1].split(" = ")[0].trim();
+        String thirdUsername = names[2].split(" = ")[0].trim();
 
         String standUpMessageWithNames = MessageType.STAND_UP.getMessage() + "\n"
-                + "<@" + firstUsername + "> " + "You have been chosen to run stand up! Happy " + day + "\n"
-                + "Backup: <@" + secondUsername + "> , <@" + thirdUsername + ">";
+                + "<" + firstUsername + "> " + "You have been chosen to run stand up! Happy " + day + "\n"
+                + "Backup: *" + secondUsername + "* , *" + thirdUsername + "*";
 
         xpBotRequest.setMessage(standUpMessageWithNames);
         botClient.sendMessage(xpBotRequest);
