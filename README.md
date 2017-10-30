@@ -2,7 +2,7 @@
 
 #### Purpose  
 Current purpose of this bot is to send a stand up reminder at 08:05:30 
-with 3 random names to determine who will run the morning stand up.
+with 4 random names to determine the host, scribe, and backups for office wide morning stand up.
 
 #### How to interact with the bot
 
