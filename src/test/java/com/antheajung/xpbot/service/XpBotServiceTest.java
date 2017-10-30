@@ -107,11 +107,13 @@ public class XpBotServiceTest {
 
         xpBotService.sendStandUpReminder(xpBotRequest);
 
-        assertThat(xpBotRequest.getMessage()).contains("You have been chosen to run stand up! Happy ");
         assertThat(xpBotRequest.getMessage()).contains(MessageType.STAND_UP.getMessage());
+        assertThat(xpBotRequest.getMessage()).contains("Host:");
+        assertThat(xpBotRequest.getMessage()).contains("Scribe:");
         assertThat(xpBotRequest.getMessage()).contains("Backup:");
         assertThat(xpBotRequest.getMessage().toLowerCase())
                 .contains(LocalDate.now().getDayOfWeek().name().toLowerCase());
+
         verify(botClient).sendMessage(xpBotRequest);
     }
 }

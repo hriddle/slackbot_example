@@ -23,12 +23,6 @@ public final class XpBotUtil {
 
     public final static String KEYWORD_TACO = ":taco:";
 
-    public final static String KEYWORD_MONDAY = "monday";
-    public final static String KEYWORD_TUESDAY = "tuesday";
-    public final static String KEYWORD_WEDNESDAY = "wednesday";
-    public final static String KEYWORD_THURSDAY = "thursday";
-    public final static String KEYWORD_FRIDAY = "friday";
-
     public final static String EMOJI_TACO = ":taco:";
     public final static String EMOJI_PINEAPPLE = ":pineapple:";
     public final static String EMOJI_CHEESE = ":cheese_wedge:";

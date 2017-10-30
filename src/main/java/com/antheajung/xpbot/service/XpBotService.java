@@ -67,15 +67,20 @@ public class XpBotService {
     public void sendStandUpReminder(XpBotRequest xpBotRequest) {
         String currentDay = LocalDate.now().getDayOfWeek().name().toLowerCase();
         String day = currentDay.substring(0, 1).toUpperCase() + currentDay.substring(1, currentDay.length());
-        String[] names = getNames(3).split(",");
+        String[] names = getNames(4).split(",");
 
-        String firstUsername = "@" + names[0].split(" = ")[1];
-        String secondUsername = names[1].split(" = ")[0].trim();
-        String thirdUsername = names[2].split(" = ")[0].trim();
+        String chosenHostUserId = "@" + names[0].split(" = ")[1];
+        String chosenScribeUserId = "@" + names[1].split(" = ")[1];
+        String backUpNameOne = names[2].split(" = ")[0].trim();
+        String backUpNameTwo = names[3].split(" = ")[0].trim();
 
         String standUpMessageWithNames = MessageType.STAND_UP.getMessage() + "\n"
-                + "<" + firstUsername + "> " + "You have been chosen to run stand up! Happy " + day + "\n"
-                + "Backup: *" + secondUsername + "* , *" + thirdUsername + "*";
+                + "Host: <" + chosenHostUserId + ">\n"
+                + "Scribe: <" + chosenScribeUserId + ">\n"
+                + "Backup: " + backUpNameOne + ", " + backUpNameTwo + "\n"
+                + "Happy " + day;
+
+        logger.log(Level.INFO, "** Sending stand up message: " + standUpMessageWithNames + " **");
 
         xpBotRequest.setMessage(standUpMessageWithNames);
         botClient.sendMessage(xpBotRequest);
